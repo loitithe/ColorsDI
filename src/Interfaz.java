@@ -2,8 +2,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.EventListener;
 
 import javax.swing.*;
 
@@ -21,6 +27,10 @@ public class Interfaz extends JFrame implements ActionListener {
     JLabel lblRojo, lblVerde, lblAzul;
 
     JPanel jpanel_colorsButton, jpanel_principal, jpanel_ScrollsBar, jpanel_rgbNumbers;
+    int valor_r = 0;
+    int valor_g = 0;
+    int valor_b = 0;
+    Color pintarColor = new Color(valor_r, valor_g, valor_b);
 
     public Interfaz() {
         super("Colores");
@@ -45,12 +55,15 @@ public class Interfaz extends JFrame implements ActionListener {
 
         }
         jpanel_principal = new JPanel();
+
         jpanel_principal.setBackground(Color.lightGray);
 
         scrollBar_Red = new JScrollBar();
         scrollBar_Red.setBackground(Color.red);
+
         scrollBar_Green = new JScrollBar();
         scrollBar_Green.setBackground(Color.green);
+
         scrollBar_Blue = new JScrollBar();
         scrollBar_Blue.setBackground(Color.blue);
 
@@ -67,7 +80,7 @@ public class Interfaz extends JFrame implements ActionListener {
         lblRojo.setBackground(Color.red);
         lblRojo.setForeground(Color.BLACK);
 
-        textRojo = new JTextField("0");
+        textRojo = new JTextField("" + valor_r);
 
         lblVerde = new JLabel("verde");
         lblVerde.setOpaque(true);
@@ -76,7 +89,7 @@ public class Interfaz extends JFrame implements ActionListener {
         lblVerde.setBackground(Color.GREEN);
         lblVerde.setForeground(Color.BLACK);
 
-        textVerde = new JTextField("0");
+        textVerde = new JTextField("" + valor_g);
 
         lblAzul = new JLabel("azul");
         lblAzul.setOpaque(true);
@@ -85,7 +98,7 @@ public class Interfaz extends JFrame implements ActionListener {
         lblAzul.setBackground(Color.blue);
         lblAzul.setForeground(Color.BLACK);
 
-        textAzul = new JTextField("0");
+        textAzul = new JTextField("" + valor_b);
 
         jpanel_rgbNumbers.add(lblRojo);
         jpanel_rgbNumbers.add(textRojo);
@@ -97,6 +110,36 @@ public class Interfaz extends JFrame implements ActionListener {
         this.add(jpanel_ScrollsBar, BorderLayout.WEST);
         this.add(jpanel_colorsButton, BorderLayout.EAST);
         this.add(jpanel_principal, BorderLayout.CENTER);
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                // TODO Auto-generated method stub
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    pintarColor = new Color();
+                    jpanel_principal.setBackground(pintarColor);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton buttonColor = (JButton) e.getSource();
+        pintarColor = buttonColor.getBackground();
+        jpanel_principal.setBackground(pintarColor);
+        obtenerComponentesColor(pintarColor);
+    }
+
+    public void obtenerComponentesColor(Color pintarColor) {
+        valor_r = pintarColor.getRed();
+        valor_g = pintarColor.getGreen();
+        valor_b = pintarColor.getBlue();
+
+        textRojo.setText("" + valor_r);
+        textVerde.setText("" + valor_g);
+        textAzul.setText("" + valor_b);
+
     }
 
 }
